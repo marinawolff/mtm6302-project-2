@@ -7,8 +7,6 @@ const $favorites = document.getElementById('favorites')
 
 
 let data = {}
-
-//array of objetcs/ each object is a saved search
 const favorites = []
 
 function nasaRequest(){
@@ -20,7 +18,7 @@ function nasaRequest(){
         const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=xHJD9wnMBmusn5f6EhzKzT7PWs3Rf3gHayCndq4E&date=${$date.value}`)
         const json = await response.json()
 
-        //displasys APOD information/ checking if the json is valid - future dates are undefined from APOD
+        //displays APOD information/ checking if the json is valid - future dates are undefined from APOD
         if (!json.code){
             $apod.innerHTML = `
                 <img class="imgbig rounded-3" id="imgbig" data-hd="${json.hdurl}" src="${json.url}">
@@ -31,7 +29,7 @@ function nasaRequest(){
                     <button type="button" class="btn btn-primary save" id="save">Save to Favorites</button>
                 </div>`
         } else {
-            $apod.textContent = `Sorry! No images for future dates`
+            $apod.textContent = `Sorry! No images for this date!`
         }
             
 
@@ -44,7 +42,7 @@ function nasaRequest(){
             }
         })
 
-
+        // closes hd image  
         $overlay.addEventListener('click', function(){
             $overlay.style.display = 'none'
           })
@@ -57,7 +55,6 @@ function nasaRequest(){
             date: json.date,
             explanation: json.explanation
         }
-
     })
 }
 
@@ -73,11 +70,8 @@ $apod.addEventListener('click', function(e){
     }
 
     //stores data in localStorage
-    function saveFavorites(){
-        localStorage.setItem('favorites', JSON.stringify(favorites))
-    }
+    localStorage.setItem('favorites', JSON.stringify(favorites))
 
-    saveFavorites()
 
     function buildFavorites(){
         const html = []
@@ -93,21 +87,37 @@ $apod.addEventListener('click', function(e){
                     </div>
                 </div>`)
         }
-        $favorites.innerHTML = html.join('')  
+        $favorites.innerHTML = html.join('')
     }
 
     buildFavorites()
-
-    $favorites.addEventListener('click', function(e){
-        if(e.target.classList.contains('delete')){
-            const index = e.target.dataset.index
-    
-            favorites.splice(index, 1)
-
-            saveFavorites()
-        
-            buildFavorites()
-        }
-    })
 })
-    
+
+$favorites.addEventListener('click', function(e){
+    if(e.target.classList.contains('delete')){
+        const index = e.target.dataset.index
+        favorites.splice(index, 1)
+        localStorage.removeItem(index)
+    }
+
+    localStorage.setItem('favorites', JSON.stringify(favorites))
+
+    function buildFavorites(){
+        const html = []
+
+        for (let i = 0; i < favorites.length; i++){
+            html.push(`
+                <div class="fav-info border d-flex flex-wrap p-3 mt-3">
+                    <img class="img-small rounded-3" src="${favorites[i].url}">
+                    <div class="ms-4">
+                        <h4> ${favorites[i].title}</h4>
+                        <h5> ${favorites[i].date}</h5>
+                        <button type="button" data-index="${i}" class="btn btn-danger delete">Delete</button>
+                    </div>
+                </div>`)
+        }
+        $favorites.innerHTML = html.join('')
+    }
+
+    buildFavorites()
+})

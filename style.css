@@ -8,15 +8,16 @@
     margin-top: 100px;
 }
 
+
 h5{
     color:rgb(107, 107, 107);
     font-size: 14px;
 }
 
 .imgbig{
-    
     max-width: 400px;
     height: 100%;
+    margin: 20px
 }
 
 .img-small{
@@ -53,4 +54,14 @@ h5{
     align-items: center;
     height: 100%;
 
+}
+
+@media screen and (min-width:900px){
+    .container1{
+        display: flex;
+    }
+
+    .imgbig{
+        margin: 0;
+    }
 }
