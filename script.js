@@ -5,7 +5,6 @@ const $date = document.getElementById('date')
 const $overlay = document.getElementById('overlay')
 const $favorites = document.getElementById('favorites')
 
-
 let data = {}
 let favorites = []
 
@@ -32,8 +31,7 @@ function nasaRequest(){
                     <p class="description">${json.explanation}</p>
                     <button type="button" class="btn btn-info save" id="save">Save to Favorites</button>
                 </div>`
-        }
-            
+        }  
 
         //adds click event to the image and displaying big version of the image
         $body.addEventListener('click', function(e){
@@ -85,7 +83,6 @@ function buildFavorites(){
     $favorites.innerHTML = html.join('')
 }
 
-
 //add click event to Save to Favorite button
 $apod.addEventListener('click', function(e){
     if (e.target.classList.contains('save')){
@@ -96,7 +93,6 @@ $apod.addEventListener('click', function(e){
 
     buildFavorites()
 })
-
 
 // adds event to Delete button
 $favorites.addEventListener('click', function(e){
